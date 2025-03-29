@@ -5,7 +5,13 @@ class ChuyenXe:
     def get_all():
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM CHUYENXE")
+        cursor.execute("""
+            SELECT IDChuyen, IDTaiXe, IDXe, IDTuyenXe, IDBenKhoiHanh, BenKhoiHanh, 
+                IDBenDen, BenDen, NgayXuatPhat, 
+                TIME_FORMAT(TG_XuatPhat, '%H:%i:%s') AS TG_XuatPhat,
+                TIME_FORMAT(TG_DuDen, '%H:%i:%s') AS TG_DuDen, GiaVe
+            FROM CHUYENXE
+        """)
         result = cursor.fetchall()
         conn.close()
         return result
