@@ -246,7 +246,126 @@ section .TimChuyenXe{
     background-color: #0056b3;
 }
 
+/* Kết quả tìm kiếm chuyến xe */
+.KetQuaChuyenXe {
+    display: flex;
 
+    align-items: center;
+    row-gap: 2rem;
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    color: #221314;
+}
+.KetQuaChuyenXe h3{
+    font-weight: 600;
+    font-size: 30px;
+    color: green;
+}
+.Result {
+    align-items: center;
+    width: 100%;
+    gap: 24px;
+    background: white;
+}
+
+#listVeXe{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 2rem;
+}
+.veXe{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 40px 20px 40px 20px;
+    background: white;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 16px;
+    border-color: black;
+    box-shadow: 5px 5px 10px rgba(0,0,0, 0.5);
+}
+.tuyenXe {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+#time{
+    font-size: 24px;
+}
+
+.DiaDiem{
+    font-size: 20px;
+    font-weight: normal;
+    width: fit-content;
+    margin: 6px 0 6px 0;
+}
+
+.DiaDiemDen{
+    text-align: right;
+}
+
+.icon-diadiem {
+    display: flex;
+    align-items: center; /* Căn giữa theo chiều dọc */
+    gap: 10px; /* Khoảng cách giữa các phần tử */
+  }
+  
+.icon-diadiem i {
+    font-size: 26px;
+    color: #4CAF50; /* Màu của biểu tượng */
+}
+  
+.icon-diadiem hr {
+    flex-grow: 1; /* Để hr chiếm không gian còn lại */
+    border: 1px solid #4CAF50; /* Màu của đường kẻ ngang */
+    margin: 0; /* Loại bỏ margin mặc định của hr */
+    width: 50px;
+ }
+
+#ThongTinXe{
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#ThongTinXe li{
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.DatVeXe{
+    border-left: 1px solid black;
+    padding-left: 20px;
+    align-items: center;
+    justify-items: center;
+    gap: 10px;
+
+}
+.DatVeXe h3{
+    font-size: 24px;
+    margin: 0;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+#tcx-btnDatVe{
+    padding: 10px 22px;
+    Font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 16px;
+    display: inline-block;
+    letter-spacing: 1px;
+    border-radius: 10px;
+    border: none;
+    background: green;
+    color: #fff;
+}
 
 /* footer */
 #contact {

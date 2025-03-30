@@ -66,14 +66,23 @@ def timkiem_chuyenxe():
     id_tuyen = tuyen["IDTuyenXe"]
 
     # Truy vấn lấy dữ liệu từ bảng CHUYENXE
+    # cursor.execute("""
+    #     SELECT cx.IDChuyen, bx1.TenBen AS BenKhoiHanh, bx2.TenBen AS BenDen, 
+    #            cx.NgayXuatPhat, cx.TG_XuatPhat, cx.GiaVe
+    #     FROM CHUYENXE cx
+    #     JOIN BENXE bx1 ON cx.IDBenKhoiHanh = bx1.IDBen
+    #     JOIN BENXE bx2 ON cx.IDBenDen = bx2.IDBen
+    #     WHERE cx.IDTuyenXe = %s
+    # """, (str(id_tuyen),))
     cursor.execute("""
-        SELECT cx.IDChuyen, bx1.TenBen AS BenKhoiHanh, bx2.TenBen AS BenDen, 
-               cx.NgayXuatPhat, cx.TG_XuatPhat, cx.GiaVe
+        SELECT cx.TG_XuatPhat, bx1.TenBen AS BenKhoiHanh, 
+               cx.TG_DuDen, bx2.TenBen AS BenDen, cx.GiaVe
         FROM CHUYENXE cx
         JOIN BENXE bx1 ON cx.IDBenKhoiHanh = bx1.IDBen
         JOIN BENXE bx2 ON cx.IDBenDen = bx2.IDBen
         WHERE cx.IDTuyenXe = %s
     """, (str(id_tuyen),))
+
 
     chuyen_xe_list = cursor.fetchall()
 
