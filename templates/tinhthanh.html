@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh sách Tỉnh Thành</title>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            fetch("http://127.0.0.1:5000/tinhthanh")
+                .then(response => response.json())
+                .then(data => {
+                    let tableBody = document.getElementById("tinhthanh-body");
+                    data.forEach(tinh => {
+                        let row = `<tr><td>${tinh.IDTinh}</td><td>${tinh.TenTinh}</td></tr>`;
+                        tableBody.innerHTML += row;
+                    });
+                })
+                .catch(error => console.error("Lỗi khi lấy dữ liệu:", error));
+        });
+    </script>
+</head>
+<body>
+    <h2>Danh sách Tỉnh Thành</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID Tỉnh</th>
+                <th>Tên Tỉnh</th>
+            </tr>
+        </thead>
+        <tbody id="tinhthanh-body">
+            <!-- Dữ liệu sẽ được thêm vào đây -->
+        </tbody>
+    </table>
+</body>
+</html>

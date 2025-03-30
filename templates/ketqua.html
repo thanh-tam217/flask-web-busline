@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kết quả</title>
+</head>
+<body>
+    <table>
+        <tr>
+            <th>Mã chuyến</th>
+            <th>Bến khởi hành</th>
+            <th>Bến đến</th>
+            <th>Ngày xuất phát</th>
+            <th>Giờ xuất phát</th>
+            <th>Giá vé</th>
+        </tr>
+        {% for chuyen in chuyen_xe_list %}
+        <tr>
+            <td>{{ chuyen.IDChuyen }}</td>
+            <td>{{ chuyen.BenKhoiHanh }}</td>
+            <td>{{ chuyen.BenDen }}</td>
+            <td>{{ chuyen.NgayXuatPhat }}</td>
+            <td>{{ chuyen.TG_XuatPhat }}</td>
+            <td>{{ chuyen.GiaVe }}</td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="6">Không có dữ liệu chuyến xe</td>
+        </tr>
+        {% endfor %}
+    </table>
+    
+</body>
+</html>

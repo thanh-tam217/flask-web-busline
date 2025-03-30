@@ -19,14 +19,14 @@ class TuyenXe:
 #         result = cursor.fetchall()
 #         conn.close()
 #         return result
-    @staticmethod
-    def get_by_id(id_tuyenxe):
-        conn = get_db_connection()
-        cursor = conn.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM TUYENXE WHERE IDTuyenXe = %s", (id_tuyenxe,))
-        result = cursor.fetchone()
-        conn.close()
-        return result
+    # @staticmethod
+    # def get_by_id(id_tuyenxe):
+    #     conn = get_db_connection()
+    #     cursor = conn.cursor(dictionary=True)
+    #     cursor.execute("SELECT * FROM TUYENXE WHERE IDTuyenXe = %s", (id_tuyenxe,))
+    #     result = cursor.fetchone()
+    #     conn.close()
+    #     return result
         
 
     @staticmethod

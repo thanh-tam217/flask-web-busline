@@ -1,5 +1,5 @@
 from config import get_db_connection
-
+ # type: ignore
 class ChuyenXe:
     @staticmethod
     def get_all():
@@ -15,6 +15,53 @@ class ChuyenXe:
         result = cursor.fetchall()
         conn.close()
         return result
+
+    # @staticmethod
+    # def get_by_tinhthanh(diem_di, diem_den):
+    #     conn = get_db_connection()  # Mở kết nối
+    #     cursor = conn.cursor(dictionary=True)
+        
+    #     cursor.execute("""
+    #         SELECT IDChuyen, IDTaiXe, IDXe, IDTuyenXe, IDBenKhoiHanh, BenKhoiHanh, 
+    #             IDBenDen, BenDen, NgayXuatPhat, 
+    #             TIME_FORMAT(TG_XuatPhat, '%H:%i:%s') AS TG_XuatPhat,
+    #             TIME_FORMAT(TG_DuDen, '%H:%i:%s') AS TG_DuDen, GiaVe
+    #         FROM CHUYENXE
+    #         WHERE IDTuyenXe IN (
+    #             SELECT IDTuyenXe FROM TUYENXE 
+    #             WHERE IDDiemDi = %s AND IDDiemDen = %s
+    #         )
+    #     """, (diem_di, diem_den))
+
+    #     result = cursor.fetchall()
+    #     conn.close()  # Đóng kết nối sau khi truy vấn
+    #     return result
+
+    @staticmethod
+    def get_by_tinhthanh(diem_di, diem_den):
+        print(f"🔎 Tìm chuyến xe từ tỉnh {diem_di} đến tỉnh {diem_den}")  # Debug
+        
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+
+        query = """
+                            SELECT CX.*
+                            FROM CHUYENXE CX
+                            JOIN TUYENXE TX ON CX.IDTuyenXe = TX.IDTuyen
+                            WHERE TX.TenDiemDi = %s AND TX.TenDiemDen = %s
+                        """
+        cursor.execute(query, (diem_di, diem_den))
+        result = cursor.fetchall()
+
+        cursor.close()
+        conn.close()
+        
+        return result
+
+        
+
+    
+
 
     @staticmethod
     def get_by_id(id_chuyen):

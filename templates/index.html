@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Tìm Kiếm Chuyến Xe</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <a href="#" class="logo">THTH</a>
+        <ul class="navbar">
+            <li><a href="#">Trang chủ</a></li>
+            <li><a href="#">Lịch trình</a></li>
+            <li><a href="#">Tra cứu vé</a></li>
+            <li><a href="#">Liên hệ</a></li>
+            <li><button id="btnLogin" class="btnDangNhap">Đăng nhập</button></li>
+        </ul>
+    </header>
+
+    <!--Banner-->
+    <section class="TrangChu" id="TrangChu">
+        <div class="banner">
+            <h1>Đồng hành</h1>
+            <h2>CÙNG NHỮNG CHUYẾN ĐI</h2>
+        </div>
+    </section>
+
+    <!-- Tìm chuyến xe -->
+    <section class='TimChuyenXe'>
+        <h3>Tìm kiếm chuyến xe</h3>
+        <div class="search-container">
+            <form action="/timkiem_chuyenxe" method="GET" class="search-form">
+                <div class="form-search">
+                    <div class="form-group">
+                        <label for="diem_di">Chọn điểm đi:</label>
+                        <select id="diem_di" name="diem_di" required>
+                            <option value="" disabled selected>-- Chọn tỉnh thành --</option>
+                        </select>
+                    </div>
+        
+                    <div class="form-group">
+                        <label for="diem_den">Chọn điểm đến:</label>
+                        <select id="diem_den" name="diem_den" required>
+                            <option value="" disabled selected>-- Chọn tỉnh thành --</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="ngay_xuat_phat">Ngày xuất phát</label>
+                        <input type="date" name="ngay_xuat_phat" id="ngay_xuat_phat">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="so-ve">Số vé</label>
+                        <input type="number" name="Số vé" step="1">
+                    </div>
+                </div>
+                
+                <!-- <div class="form-search">
+                    <label for="diem_di">Chọn điểm đi:</label>
+                    <select id="diem_di" name="diem_di" required>
+                        <option value="" disabled selected>-- Chọn tỉnh thành --</option>
+                    </select>
+
+                    <label for="diem_den">Chọn điểm đến:</label>
+                    <select id="diem_den" name="diem_den" required>
+                        <option value="" disabled selected>-- Chọn tỉnh thành --</option>
+                    </select>
+                    <label for="ngay_xuat_phat">Ngày xuất phát</label>
+                    <input type="date" name="ngay_xuat_phat" id="ngay_xuat_phat">
+                </div> -->
+                <button type="submit">Tìm kiếm</button>
+            </form>
+        </div>
+    </section>
+    
+
+    <!--footer-->
+    <section id="contact">
+        <div class="footer">
+            <div class="main">
+                <!--Hotline-->
+                <div class="list">
+                    <div class="hotline">
+                        <h3>TRUNG TÂM TỔNG ĐÀI & CSKH</h3>
+                        <h2>1900 6868</h2>
+                        <p>Địa chỉ: 256 Nguyễn Văn Cừ, Ninh Kiều, Cần Thơ</p>
+                        <p>Email: thth@buslines.vn</p>
+                        <p>Số điện thoại: 0686868680</p>
+                    </div>
+                </div>
+
+                <!--List 1-->
+                <div class="list">
+                    <h4>THTH Bus Lines</h4>
+                    <ul>
+                        <li><a href="#">Trang chủ</a></li>   
+                        <li><a href="#">Lịch trình</a></li>   
+                        <li><a href="#">Tuyển dụng</a></li>   
+                        <li><a href="#">Tin tức</a></li>            
+                    </ul>
+                </div>
+
+                <!--List 2-->
+                <div class="list">
+                    <h4>Hỗ trợ</h4>
+                    <ul>
+                        <li><a href="#">Chăm sóc khách hàng</a></li>   
+                        <li><a href="#">Hướng dấn đặt vé</a></li>   
+                        <li><a href="#">Câu hỏi thường gặp</a></li>         
+                    </ul>
+                </div>
+            </div>
+            
+        </div>
+    </section>
+    
+
+    <script>
+
+        // xử lý sticky
+        const header = document.querySelector("header");
+        window.addEventListener("scroll", function(){
+            header.classList.toggle("sticky", window.scrollY > 0);
+        });
+        function searchTrips() {
+                window.location.href = "TimChuyenXe.html";
+            }
+        document.getElementById("btnLogin").addEventListener("click", function(){
+                window.location.href = "login.html"
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+        fetch("http://127.0.0.1:5000/api/tentinhthanh")
+            .then(response => response.json())
+            .then(data => {
+                let selectDiemDi = document.getElementById("diem_di");
+                let selectDiemDen = document.getElementById("diem_den");
+
+                // Xóa option cũ và thêm option mặc định
+                selectDiemDi.innerHTML = '<option value="" disabled selected>-- Chọn tỉnh thành --</option>';
+                selectDiemDen.innerHTML = '<option value="" disabled selected>-- Chọn tỉnh thành --</option>';
+
+                // Thêm dữ liệu từ API vào dropdown
+                data.forEach(tinh => {
+                    let option1 = document.createElement("option");
+                    option1.value = tinh.TenTinh; // Dùng TenTinh thay vì IDTinh
+                    option1.textContent = tinh.TenTinh;
+
+                    let option2 = option1.cloneNode(true);
+
+                    selectDiemDi.appendChild(option1);
+                    selectDiemDen.appendChild(option2);
+                });
+            })
+            .catch(error => console.error("Lỗi khi tải dữ liệu:", error));
+    });
+
+    // Sự kiện submit form
+    document.getElementById("searchForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // Ngăn trang bị reload
+
+        let diemDi = document.getElementById("diem_di").value;
+        let diemDen = document.getElementById("diem_den").value;
+
+        if (!diemDi || !diemDen) {
+            alert("Vui lòng chọn điểm đi và điểm đến!");
+            return;
+        }
+
+        // Chuyển hướng đến trang kết quả với tham số truy vấn
+        let url = `/timkiem_chuyenxe?diem_di=${encodeURIComponent(diemDi)}&diem_den=${encodeURIComponent(diemDen)}`;
+        window.location.href = url;
+    });
+    </script>
+        
+
+</body>
+</html>
