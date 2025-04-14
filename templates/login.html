@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+</head>
+<body>
+    <header>
+        <a href="#" class="logo">THTH</a>
+        <ul class="navbar">
+            <li><a href="#">Trang chủ</a></li>
+            <li><a href="#">Lịch trình</a></li>
+            <li><a href="#">Tra cứu vé</a></li>
+            <li><a href="#">Liên hệ</a></li>
+        </ul>
+    </header>
+
+    <div class="container">
+        <div class="form-box login">
+            <form action="">
+                <h1>Đăng nhập</h1>
+                <!--Nhập số điện thoại-->
+                <div class="input-box">
+                    <input type="text" placeholder="Username/Số điện thoại" required>
+                    <i class='bx bx-user' ></i>
+                </div>
+
+                <!--Mật khẩu-->
+                <div class="input-box">
+                    <input type="password" placeholder="Mật khẩu" required>
+                    <i class='bx bx-lock-alt' ></i>
+                </div>
+                <div class="forgot-link">
+                    <a href="#">Quên mật khẩu?</a>
+                </div>
+                <button type="submit" class="btn">Đăng nhập tài khoản</button>
+                <p>hoặc đăng nhập với</p>
+                <div class="social-icons">
+                    <a href="#"><i class='bx bxl-google' ></i></a>
+                    <a href="#"><i class='bx bxl-facebook' ></i></a>
+                </div>
+            </form>
+        </div>
+
+        <div class="form-box register">
+            <form action="">
+                <h1>Đăng ký tài khoản</h1>
+                <!--Nhập họ tên-->
+                <div class="input-box">
+                    <input type="text" placeholder="Họ và tên" required>
+                </div>
+                <!--Nhập số điện thoại-->
+                <div class="input-box">
+                    <input type="text" placeholder="Số điện thoại" required>
+                </div>
+                <!--Mật khẩu-->
+                <div class="input-box">
+                    <input type="password" placeholder="Mật khẩu" required>
+                </div>
+                <!--Mật khẩu-->
+                <div class="input-box">
+                    <input type="password" placeholder="Nhập lại mật khẩu" required>
+                </div>
+                <!--Nhập số CCCD-->
+                <div class="input-box">
+                    <input type="text" placeholder="Số CCCD" required>
+                </div>
+                <!--Nhập ngày sinh-->
+                <div class="input-box">
+                    <input type="date" placeholder="Ngày sinh" required>
+                </div>
+                <!--Nhập giới tính-->
+                <div class="input-box">
+                    <input type="text" placeholder="Giới tính" required>
+                </div>
+                <!--Nhập địa chỉ-->
+                <div class="input-box">
+                    <input type="text" placeholder="Địa chỉ" required>
+                </div>
+                <button type="submit" class="btn">Đăng ký tài khoản</button>
+            </form>
+        </div>
+        <div class="toggle-box">
+            <div class="toggle-panel toggle-left">
+                <h2>Chào mừng bạn quay trở lại!</h1>
+                <p>Nếu chưa có tài khoản</p>
+                <button class="btn link-DangKy">Đăng ký tại đây</button>
+            </div>
+            <div class="toggle-panel toggle-right">
+                <h2>Tạo tài khoản nhanh chóng!</h2>
+                <p>Nếu đã có tài khoản</p>
+                <button class="btn link-DangNhap">Đăng nhập tại đây</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- script -->
+     <script>
+            document.addEventListener("DOMContentLoaded", function () {
+            const loginForm = document.querySelector(".form-box.login form");
+            const usernameInput = loginForm.querySelector("input[type='text']");
+            const loginButton = loginForm.querySelector(".btn");
+
+            loginButton.addEventListener("click", function (event) {
+                event.preventDefault(); // Ngăn chặn việc gửi form mặc định
+
+                const username = usernameInput.value.trim();
+
+                if (username === "@admin") {
+                    window.location.href = "admin.html";
+                } else if (username === "@nvbanve") {
+                    window.location.href = "nvbanve.html";
+                } else {
+                    alert("Tài khoản không hợp lệ!");
+                }
+            });
+        });
+     </script>
+</body>
+</html>

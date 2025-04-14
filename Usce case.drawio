@@ -1,0 +1,40 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36" version="26.1.1">
+  <diagram name="Trang-1" id="1TBDE3fbNImCEBSwi3pw">
+    <mxGraphModel dx="832" dy="337" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="Bwc3ZbZIkhAzkJJQ3rlX-13" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.3333333333333333;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="Bwc3ZbZIkhAzkJJQ3rlX-1" target="Bwc3ZbZIkhAzkJJQ3rlX-12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Bwc3ZbZIkhAzkJJQ3rlX-1" value="&lt;div&gt;Admin&lt;/div&gt;" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="170" y="220" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Bwc3ZbZIkhAzkJJQ3rlX-5" value="Đăng nhập" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="520" y="200" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Bwc3ZbZIkhAzkJJQ3rlX-6" value="Quản lý bến xe" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="280" y="160" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Bwc3ZbZIkhAzkJJQ3rlX-7" value="Quản lý tuyến xe" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="280" y="290" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Bwc3ZbZIkhAzkJJQ3rlX-8" value="Quản lý tỉnh thành" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="280" y="370" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Bwc3ZbZIkhAzkJJQ3rlX-9" value="Quản lý xe" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="280" y="460" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Bwc3ZbZIkhAzkJJQ3rlX-10" value="Quản lý chuyến xe" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="280" y="640" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Bwc3ZbZIkhAzkJJQ3rlX-11" value="Quản lý nhân viên" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="280" y="554.5" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Bwc3ZbZIkhAzkJJQ3rlX-12" value="Quản lý khách hàng" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="280" y="70" width="160" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

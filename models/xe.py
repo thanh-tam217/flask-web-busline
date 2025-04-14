@@ -18,18 +18,38 @@ class Xe:
         result = cursor.fetchone()
         conn.close()
         return result if result else {"error": "Không tìm thấy xe"}
+    
+    @staticmethod
+    def get_by_name(ten_xe):
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        query = "SELECT * FROM XE WHERE LoaiXe = %s"
+        cursor.execute(query, (ten_xe,))
+        result = cursor.fetchall()  # Dùng fetchall() vì có thể có nhiều bến xe trùng tên
+        conn.close()
+        return result
+    
+    # @staticmethod
+    # def get_by_trangthai(trangthai):
+    #     conn = get_db_connection()
+    #     cursor = conn.cursor(dictionary=True)
+    #     query = "SELECT * FROM XE WHERE TrangThai = %s"
+    #     cursor.execute(query, (trangthai,))
+    #     result = cursor.fetchall()  # Dùng fetchall() vì có thể có nhiều bến xe trùng tên
+    #     conn.close()
+    #     return result
 
     @staticmethod
-    def create(bien_so, loai_xe, so_ghe, trang_thai):
+    def create(idxe, bien_so, loai_xe, so_ghe, trang_thai):
         conn = get_db_connection()
         cursor = conn.cursor()
         try:
             cursor.execute(
-                "INSERT INTO XE (BienSo, LoaiXe, SoGhe, TrangThai) VALUES (%s, %s, %s, %s)",
-                (bien_so, loai_xe, so_ghe, trang_thai),
+                "INSERT INTO XE (IDXe, BienSo, LoaiXe, SoGhe, TrangThai) VALUES (%s, %s, %s, %s, %s)",
+                (idxe, bien_so, loai_xe, so_ghe, trang_thai),
             )
             conn.commit()
-            return {"message": "Thêm thành công", "IDXe": cursor.lastrowid}
+            return {"message": "Thêm thành công"}
         except Exception as e:
             conn.rollback()
             return {"error": str(e)}

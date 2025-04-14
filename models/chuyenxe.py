@@ -16,30 +16,11 @@ class ChuyenXe:
         conn.close()
         return result
 
-    # @staticmethod
-    # def get_by_tinhthanh(diem_di, diem_den):
-    #     conn = get_db_connection()  # Mở kết nối
-    #     cursor = conn.cursor(dictionary=True)
-        
-    #     cursor.execute("""
-    #         SELECT IDChuyen, IDTaiXe, IDXe, IDTuyenXe, IDBenKhoiHanh, BenKhoiHanh, 
-    #             IDBenDen, BenDen, NgayXuatPhat, 
-    #             TIME_FORMAT(TG_XuatPhat, '%H:%i:%s') AS TG_XuatPhat,
-    #             TIME_FORMAT(TG_DuDen, '%H:%i:%s') AS TG_DuDen, GiaVe
-    #         FROM CHUYENXE
-    #         WHERE IDTuyenXe IN (
-    #             SELECT IDTuyenXe FROM TUYENXE 
-    #             WHERE IDDiemDi = %s AND IDDiemDen = %s
-    #         )
-    #     """, (diem_di, diem_den))
 
-    #     result = cursor.fetchall()
-    #     conn.close()  # Đóng kết nối sau khi truy vấn
-    #     return result
 
     @staticmethod
     def get_by_tinhthanh(diem_di, diem_den):
-        print(f"🔎 Tìm chuyến xe từ tỉnh {diem_di} đến tỉnh {diem_den}")  # Debug
+        print(f"Tìm chuyến xe từ tỉnh {diem_di} đến tỉnh {diem_den}")  # Debug
         
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)

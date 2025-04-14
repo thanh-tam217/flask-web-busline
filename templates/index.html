@@ -61,6 +61,51 @@
             </form>
         </div>
     </section>
+
+
+    <!--container CacTuyenPhoBien-->
+    <section class="CacTuyenPhoBien">
+        <h3>Các tuyến phố biến</h3>
+        <div class="row-items">
+            <!--TPB 1-->
+            <div class="container-box">
+                <div class="container-img">
+                    <img src="{{ url_for('static', filename='imgs/tpHoChiMinh.jpg')}}" alt="Cần Thơ - Tp. Hồ Chí Minh">
+                </div>
+                <h4>Cần Thơ - Tp. Hồ Chí Minh</h4>
+                <ul ThongTinTPB>
+                    <li>200km</li>
+                    <li>4 giờ</li>
+                    <li>Giường nằm</li>
+                </ul>
+            </div>
+            <!--TPB 2-->
+            <div class="container-box">
+                <div class="container-img">
+                    <img src="{{ url_for('static', filename='imgs/CanTho.jpg')}}" alt="Tp. Hồ Chí Minh - Cần thơ">
+                </div>
+                <h4>Tp. Hồ Chí Minh - Cần thơ</h4>
+                <ul ThongTinTPB>
+                    <li>200km</li>
+                    <li>4 giờ</li>
+                    <li>Giường nằm</li>
+                </ul>
+            </div>
+            <!--TPB 3-->
+            <div class="container-box">
+                <div class="container-img">
+                    <img src="{{ url_for('static', filename='imgs/HauGiang.jpg')}}" alt="Cần Thơ - Hậu giang">
+                </div>
+                <h4>Cần Thơ - Hậu giang</h4>
+                <ul ThongTinTPB>
+                    <li>200km</li>
+                    <li>4 giờ</li>
+                    <li>Giường nằm</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
     
 
     <!--footer-->
@@ -162,6 +207,11 @@
         let url = `/timkiem_chuyenxe?diem_di=${encodeURIComponent(diemDi)}&diem_den=${encodeURIComponent(diemDen)}`;
         window.location.href = url;
     });
+
+    // login
+    document.getElementById("btnLogin").addEventListener("click", function(){
+                window.location.href = "login.html"
+        });
     </script>
         
 

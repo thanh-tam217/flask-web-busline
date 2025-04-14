@@ -14,35 +14,80 @@ class BenXe:
     def get_by_id(id_ben):
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM BENXE WHERE IDBen = %s", (id_ben,))
-        result = cursor.fetchone()
+        query = "SELECT * FROM BENXE WHERE idBen = %s"
+        cursor.execute(query, (id_ben,))
+        result = cursor.fetchone()  # Dùng fetchone() vì chỉ lấy 1 bản ghi
         conn.close()
-        return result if result else {"error": "Không tìm thấy bến xe"}
-
+        return result
+    
     @staticmethod
-    def create(ten_ben, dia_chi, sdt, id_tinh):
+    def get_by_name(ten_ben):
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        query = "SELECT * FROM BENXE WHERE TenBen = %s"
+        cursor.execute(query, (ten_ben,))
+        result = cursor.fetchall()  # Dùng fetchall() vì có thể có nhiều bến xe trùng tên
+        conn.close()
+        return result
+    
+    # tìm kiếm theo tên tỉnh
+    @staticmethod
+    def get_by_ten_tinh(ten_tinh):
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        query = """
+            SELECT bx.*
+            FROM BENXE bx
+            JOIN TINHTHANH t ON bx.IDTinh = t.IDTinh
+            WHERE LOWER(t.TenTinh) = LOWER(%s)
+        """
+        cursor.execute(query, (ten_tinh,))
+        result = cursor.fetchall()
+        conn.close()
+        return result
+
+    # 
+    @staticmethod
+    def create(id_ben, ten_ben, dia_chi, sdt, id_tinh):
         conn = get_db_connection()
         cursor = conn.cursor()
         try:
             cursor.execute(
-                "INSERT INTO BENXE (TenBen, DiaChi, SDT, IDTinh) VALUES (%s, %s, %s, %s)",
-                (ten_ben, dia_chi, sdt, id_tinh),
+                "INSERT INTO BENXE (IDBen, TenBen, DiaChi, SDTBen, IDTinh) VALUES (%s, %s, %s, %s, %s)",
+                (id_ben, ten_ben, dia_chi, sdt, id_tinh),
             )
             conn.commit()
-            return {"message": "Thêm thành công", "IDBen": cursor.lastrowid}
+            return {"message": "Thêm thành công"}
         except Exception as e:
             conn.rollback()
             return {"error": str(e)}
         finally:
             conn.close()
 
+
+    # @staticmethod
+    # def update(id_ben, ten_ben, dia_chi, sdt, id_tinh):
+    #     conn = get_db_connection()
+    #     cursor = conn.cursor()
+    #     try:
+    #         cursor.execute(
+    #             "UPDATE BENXE SET IDBen =%s, TenBen = %s, DiaChi = %s, SDT = %s, IDTinh = %s WHERE IDBen = %s",
+    #             (ten_ben, dia_chi, sdt, id_tinh, id_ben),
+    #         )
+    #         conn.commit()
+    #         return {"message": "Cập nhật thành công"} if cursor.rowcount else {"error": "Không tìm thấy bến xe"}
+    #     except Exception as e:
+    #         conn.rollback()
+    #         return {"error": str(e)}
+    #     finally:
+    #         conn.close()
     @staticmethod
     def update(id_ben, ten_ben, dia_chi, sdt, id_tinh):
         conn = get_db_connection()
         cursor = conn.cursor()
         try:
             cursor.execute(
-                "UPDATE BENXE SET TenBen = %s, DiaChi = %s, SDT = %s, IDTinh = %s WHERE IDBen = %s",
+                "UPDATE BENXE SET TenBen = %s, DiaChi = %s, SDTBen = %s, IDTinh = %s WHERE IDBen = %s",
                 (ten_ben, dia_chi, sdt, id_tinh, id_ben),
             )
             conn.commit()

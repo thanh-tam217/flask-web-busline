@@ -20,49 +20,21 @@ class Khach:
         return result if result else {"error": "Không tìm thấy khách"}
 
     @staticmethod
-    def create(ho_ten, gioi_tinh, cccd, sdt):
+    def get_by_name(ten_khach):
         conn = get_db_connection()
-        cursor = conn.cursor()
-        try:
-            cursor.execute(
-                "INSERT INTO KHACH (HoTen, GioiTinh, CCCD, SDT) VALUES (%s, %s, %s, %s)",
-                (ho_ten, gioi_tinh, cccd, sdt),
-            )
-            conn.commit()
-            return {"message": "Thêm thành công", "IDKhach": cursor.lastrowid}
-        except Exception as e:
-            conn.rollback()
-            return {"error": str(e)}
-        finally:
-            conn.close()
-
+        cursor = conn.cursor(dictionary=True)
+        query = "SELECT * FROM KHACH WHERE HoTen = %s"
+        cursor.execute(query, (ten_khach,))
+        result = cursor.fetchall()  # Dùng fetchall() vì có thể có nhiều bến xe trùng tên
+        conn.close()
+        return result
+    
     @staticmethod
-    def update(id_khach, ho_ten, gioi_tinh, cccd, sdt):
+    def get_by_gioitinh(gioitinh):
         conn = get_db_connection()
-        cursor = conn.cursor()
-        try:
-            cursor.execute(
-                "UPDATE KHACH SET HoTen = %s, GioiTinh = %s, CCCD = %s, SDT = %s WHERE IDKhach = %s",
-                (ho_ten, gioi_tinh, cccd, sdt, id_khach),
-            )
-            conn.commit()
-            return {"message": "Cập nhật thành công"} if cursor.rowcount else {"error": "Không tìm thấy khách"}
-        except Exception as e:
-            conn.rollback()
-            return {"error": str(e)}
-        finally:
-            conn.close()
-
-    @staticmethod
-    def delete(id_khach):
-        conn = get_db_connection()
-        cursor = conn.cursor()
-        try:
-            cursor.execute("DELETE FROM KHACH WHERE IDKhach = %s", (id_khach,))
-            conn.commit()
-            return {"message": "Xóa thành công"} if cursor.rowcount else {"error": "Không tìm thấy khách"}
-        except Exception as e:
-            conn.rollback()
-            return {"error": str(e)}
-        finally:
-            conn.close()
+        cursor = conn.cursor(dictionary=True)
+        query = "SELECT * FROM KHACH WHERE GioiTinh = %s"
+        cursor.execute(query, (gioitinh,))
+        result = cursor.fetchall()  # Dùng fetchall() vì có thể có nhiều bến xe trùng tên
+        conn.close()
+        return result

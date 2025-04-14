@@ -18,18 +18,28 @@ class NhanVien:
         result = cursor.fetchone()
         conn.close()
         return result if result else {"error": "Không tìm thấy nhân viên"}
+    
+    @staticmethod
+    def get_by_name(ten_nhanvien):
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        query = "SELECT * FROM NHANVIEN WHERE HoTen = %s"
+        cursor.execute(query, (ten_nhanvien,))
+        result = cursor.fetchall()  # Dùng fetchall() vì có thể có nhiều bến xe trùng tên
+        conn.close()
+        return result
 
     @staticmethod
-    def create(ho_ten, sdt, dia_chi, gioi_tinh, cccd, chuc_vu):
+    def create(idnhan_vien, ho_ten, sdt, dia_chi, gioi_tinh, cccd, chuc_vu):
         conn = get_db_connection()
         cursor = conn.cursor()
         try:
             cursor.execute(
-                "INSERT INTO NHANVIEN (HoTen, SDT, DiaChi, GioiTinh, CCCD, ChucVu) VALUES (%s, %s, %s, %s, %s, %s)",
-                (ho_ten, sdt, dia_chi, gioi_tinh, cccd, chuc_vu),
+                "INSERT INTO NHANVIEN (IDNhanVien, HoTen, SDT, DiaChi, GioiTinh, CCCD, ChucVu) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+                (idnhan_vien, ho_ten, sdt, dia_chi, gioi_tinh, cccd, chuc_vu),
             )
             conn.commit()
-            return {"message": "Thêm thành công", "IDNhanVien": cursor.lastrowid}
+            return {"message": "Thêm thành công"}
         except Exception as e:
             conn.rollback()
             return {"error": str(e)}

@@ -11,10 +11,26 @@ def get_all_xe():
 def get_xe_by_id(id_xe):
     return jsonify(Xe.get_by_id(id_xe))
 
+@xe_bp.route("/xe/name/<string:ten_xe>", methods=["GET"])
+def get_xe_by_name(ten_xe):
+    xe = Xe.get_by_name(ten_xe)
+    if xe:
+        return jsonify(xe)
+    else:
+        return jsonify({"error": "Không tìm thấy xe"}), 404
+    
+# @xe_bp.route("/xe/trangthai/<string:trangthai", methods=["GET"])
+# def get_xe_by_trangthai(trangthai):
+#     xe = Xe.get_by_trangthai(trangthai)
+#     if xe:
+#         return jsonify(xe)
+#     else:
+#         return jsonify({"error": "Không tìm thấy xe"}), 404
+
 @xe_bp.route("/xe", methods=["POST"])
 def create_xe():
     data = request.json
-    return jsonify(Xe.create(data["BienSo"], data["LoaiXe"], data["SoGhe"], data["TrangThai"]))
+    return jsonify(Xe.create(data["IDXe"],data["BienSo"], data["LoaiXe"], data["SoGhe"], data["TrangThai"]))
 
 @xe_bp.route("/xe/<string:id_xe>", methods=["PUT"])
 def update_xe(id_xe):
