@@ -15,7 +15,7 @@ body {
 }
 
 #menu {
-    background: #132a13;
+    background: #fff;
     width: 300px;
     height: 100%;
     position: fixed;
@@ -62,8 +62,10 @@ body {
 
 /* Mục đang được chọn (active) */
 #menu .items li.active {
-    background: #8cbf75; /* Màu xanh nhẹ hơn */
-    border-left: 4px solid #0d3b09;
+    background: #b3d8a8; /* Màu xanh nhẹ hơn */
+    /* border-left: 10px solid #0d3b09; */
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
     font-weight: bold;
 }
 #menu .items li.active i,
@@ -92,7 +94,8 @@ body {
 
 #menu .items li a{
     text-decoration: none;
-    color: rgb(134, 141, 151);
+    /* color: rgb(134, 141, 151); */
+    color: #14510c;
     font-weight: 300px;
     transition: 0.3s ease;
 }
@@ -380,4 +383,235 @@ tbody tr td{
     background-color: #fee2e2;
     transform: scale(1.1);
 }
+
+
+/* chỉnh trạng thái xe */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    line-height: 1;
+    width: fit-content;
+}
+
+.status-active {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.status-inactive {
+    background-color: #e2e3e5;
+    color: #6c757d;
+}
+
+.status-maintenance {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+/* Optional icons (can use emoji or FontAwesome/BX icons if you have it) */
+.badge i {
+    font-size: 1rem;
+}
+
+
+/* màu cho nhân viên */
+.tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    line-height: 1;
+    width: fit-content;
+}
+
+.tag-blue {
+    background-color: #d4f0f0;
+    color: #00859c;
+}
+
+.tag-pink {
+    background-color:#ecd5e3;
+    color: #fc4024;
+}
+
+.tag-green {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.tag-brown {
+    background-color: #cab178; /* nâu */
+    color: #a15515;
+}
+
+.tag-gray {
+    background-color: #e2e3e5;
+    color: #6c757d;
+}
+
+
+#tinhThanhSelect {
+    width: 100%;
+    padding: 10px 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    background-color: #fff;
+}
+
+#tinhThanhSelect:focus {
+    border-color: #66afe9;
+    box-shadow: 0 0 5px rgba(102, 175, 233, 0.6);
+    outline: none;
+}
+
+#tinhThanhSelectEdit{
+    width: 100%;
+    padding: 10px 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    background-color: #fff;
+}
+#tinhThanhSelectEdit:focus{
+    border-color: #66afe9;
+    box-shadow: 0 0 5px rgba(102, 175, 233, 0.6);
+    outline: none;
+}
+
+.btn-save-tinhthanh{
+    background-color: #8cbf75;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+#diemDiSelect{
+    width: 100%;
+    padding: 10px 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    background-color: #fff;
+}
+
+#diemDiSelect:focus {
+    border-color: #66afe9;
+    box-shadow: 0 0 5px rgba(102, 175, 233, 0.6);
+    outline: none;
+}
+
+#diemDenSelect{
+    width: 100%;
+    padding: 10px 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    background-color: #fff;
+}
+#diemDenSelect:focus {
+    border-color: #66afe9;
+    box-shadow: 0 0 5px rgba(102, 175, 233, 0.6);
+    outline: none;
+}
+
+.btn-save-tuyenxe{
+    background-color: #8cbf75;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+
+/* Chuyến xe */
+.select{
+    width: 100%;
+    padding: 10px 12px;
+    margin-bottom: 15px;
+    margin-top: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    background-color: #fff;
+}
+
+.btn-save-chuyenxe{
+    background-color: #8cbf75;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+
+/* xe */
+.btn-save-xe{
+    background-color: #8cbf75;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+/* nhân viên */
+.btn-save-nhanvien{
+    background-color: #8cbf75;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+/* filter */
+.filter-container {
+    display: flex;
+    margin-top: 10px;
+    margin-left: 10px;
+    padding: 10px 14px;
+    font-size: 16px;
+    width: 250px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    gap: 6px; /* Khoảng cách giữa label và select */
+
+}
+
+/* Tùy chỉnh thêm cho thẻ select nếu muốn */
+.filter-container select {
+    padding: 6px 10px;
+    font-size: 16px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.filter-container select:focus {
+    border-color: #66afe9;
+    box-shadow: 0 0 5px rgba(102, 175, 233, 0.6);
+    outline: none;
+}
+
 

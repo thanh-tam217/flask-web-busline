@@ -20,9 +20,15 @@ def get_tuyenxe_by_id(id_tuyenxe):
 # Thêm tuyến xe mới
 @tuyenxe_bp.route('/tuyenxe', methods=['POST'])
 def create_tuyenxe():
-    data = request.json
-    TuyenXe.create(data)
-    return jsonify({"message": "Thêm tuyến xe thành công!"}), 201
+    try:
+        data = request.get_json()
+        result = TuyenXe.create(data)
+        return jsonify({"message": "Thêm tuyến xe thành công!"}), 201
+    except KeyError as e:
+        return jsonify({"error": f"Thiếu trường dữ liệu: {str(e)}"}), 400
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 
 # Cập nhật tuyến xe
 @tuyenxe_bp.route('/tuyenxe/<string:id_tuyenxe>', methods=['PUT'])

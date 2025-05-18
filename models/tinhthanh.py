@@ -29,51 +29,59 @@ class TinhThanh:
         result = cursor.fetchall()  # Dùng fetchall() vì có thể có nhiều bến xe trùng tên
         conn.close()
         return result
-    
-
-    # @staticmethod
-    # def create(ten_tinh):
-    #     conn = get_db_connection()
-    #     cursor = conn.cursor()
-
-    #     # Lấy ID lớn nhất hiện có
-    #     cursor.execute("SELECT IDTinh FROM TINHTHANH ORDER BY IDTinh DESC LIMIT 1")
-    #     last_id = cursor.fetchone()
-
-    #     # Sinh ID mới
-    #     if last_id and last_id[0]:  # Nếu có ID cũ
-    #         last_num = int(re.search(r'\d+', last_id[0]).group())  # Lấy số cuối
-    #         new_id = f"TT{last_num + 1:04d}"  # Format ID mới
-    #     else:
-    #         new_id = "TT0001"  # Nếu chưa có dữ liệu, bắt đầu từ TT0001
-
-    #     try:
-    #         # Thêm tỉnh thành mới với IDTinh sinh ra
-    #         cursor.execute("INSERT INTO TINHTHANH (IDTinh, TenTinh) VALUES (%s, %s)", (new_id, ten_tinh))
-    #         conn.commit()
-    #         return {"message": "Thêm thành công", "IDTinh": new_id, "TenTinh": ten_tinh}
-    #     except Exception as e:
-    #         conn.rollback()
-    #         return {"error": str(e)}
-    #     finally:
-    #         conn.close()
+        conn.close()
 
     @staticmethod
-    def create(id_tinh, ten_tinh):
+    def generate_new_id():
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("SELECT IDTinh FROM TINHTHANH WHERE IDTinh LIKE 'TT__' ORDER BY IDTinh DESC LIMIT 1")
+        result = cursor.fetchone()
+        conn.close()
+
+        if result:
+            last_id = result[0]
+            number = int(last_id[2:]) + 1
+            new_id = f"TT{str(number).zfill(2)}"
+        else:
+            new_id = "TT01"  # Nếu chưa có bản ghi nào
+        return new_id
+
+    @staticmethod
+    def create(ten_tinh):
         conn = get_db_connection()
         cursor = conn.cursor()
         try:
+            id_tinh = TinhThanh.generate_new_id()
+
             cursor.execute(
                 "INSERT INTO TINHTHANH (IDTinh, TenTinh) VALUES (%s, %s)",
                 (id_tinh, ten_tinh),
             )
             conn.commit()
-            return {"message": "Thêm thành công"}
+            return {"message": "Thêm thành công", "IDTinh": id_tinh}
         except Exception as e:
             conn.rollback()
             return {"error": str(e)}
         finally:
             conn.close()
+
+    # @staticmethod
+    # def create(id_tinh, ten_tinh):
+    #     conn = get_db_connection()
+    #     cursor = conn.cursor()
+    #     try:
+    #         cursor.execute(
+    #             "INSERT INTO TINHTHANH (IDTinh, TenTinh) VALUES (%s, %s)",
+    #             (id_tinh, ten_tinh),
+    #         )
+    #         conn.commit()
+    #         return {"message": "Thêm thành công"}
+    #     except Exception as e:
+    #         conn.rollback()
+    #         return {"error": str(e)}
+    #     finally:
+    #         conn.close()
 
     @staticmethod
     def update(id_tinh, ten_tinh):
@@ -82,22 +90,6 @@ class TinhThanh:
         cursor.execute("UPDATE TINHTHANH SET TenTinh = %s WHERE IDTinh = %s", (ten_tinh, id_tinh))
         conn.commit()
         conn.close()
-    # @staticmethod
-    # def update(id_tinh, ten_tinh):
-    #     conn = get_db_connection()
-    #     cursor = conn.cursor()
-    #     try:
-    #         cursor.execute(
-    #             "UPDATE TINHTHANH SET TenTinh = %s",
-    #             (ten_tinh),
-    #         )
-    #         conn.commit()
-    #         return {"message": "Cập nhật thành công"} if cursor.rowcount else {"error": "Không tìm thấy tỉnh thành"}
-    #     except Exception as e:
-    #         conn.rollback()
-    #         return {"error": str(e)}
-    #     finally:
-    #         conn.close()
 
     @staticmethod
     def delete(id_tinh):

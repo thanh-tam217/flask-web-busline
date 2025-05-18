@@ -40,13 +40,31 @@ class Xe:
     #     return result
 
     @staticmethod
-    def create(idxe, bien_so, loai_xe, so_ghe, trang_thai):
+    def generate_new_id():
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("SELECT IDXe FROM XE WHERE IDXe LIKE 'XE____' ORDER BY IDXe DESC LIMIT 1")
+        result = cursor.fetchone()
+        conn.close()
+
+        if result:
+            last_id = result[0]
+            number = int(last_id[2:]) + 1
+            new_id = f"XE{str(number).zfill(4)}"  # Định dạng lại ID với 4 chữ số
+        else:
+            new_id = "XE0001"
+        return new_id
+    
+    @staticmethod
+    def create(bien_so, loai_xe, so_ghe, trang_thai):
         conn = get_db_connection()
         cursor = conn.cursor()
         try:
+            id_xe = Xe.generate_new_id()  # Tạo ID mới
+
             cursor.execute(
                 "INSERT INTO XE (IDXe, BienSo, LoaiXe, SoGhe, TrangThai) VALUES (%s, %s, %s, %s, %s)",
-                (idxe, bien_so, loai_xe, so_ghe, trang_thai),
+                (id_xe, bien_so, loai_xe, so_ghe, trang_thai),
             )
             conn.commit()
             return {"message": "Thêm thành công"}
@@ -55,6 +73,7 @@ class Xe:
             return {"error": str(e)}
         finally:
             conn.close()
+
 
     @staticmethod
     def update(id_xe, bien_so, loai_xe, so_ghe, trang_thai):
@@ -86,3 +105,34 @@ class Xe:
             return {"error": str(e)}
         finally:
             conn.close()
+
+
+    @staticmethod
+    def search_by_bien_so(keyword):
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        query = "SELECT * FROM XE WHERE BienSo LIKE %s"
+        cursor.execute(query, ('%' + keyword + '%',))
+        result = cursor.fetchall()
+        conn.close()
+        return result
+
+    @staticmethod
+    def filter_by_loai_xe(loai_xe):
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        query = "SELECT * FROM XE WHERE LoaiXe = %s"
+        cursor.execute(query, (loai_xe,))
+        result = cursor.fetchall()
+        conn.close()
+        return result
+
+    @staticmethod
+    def filter_by_trang_thai(trang_thai):
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        query = "SELECT * FROM XE WHERE TrangThai = %s"
+        cursor.execute(query, (trang_thai,))
+        result = cursor.fetchall()
+        conn.close()
+        return result

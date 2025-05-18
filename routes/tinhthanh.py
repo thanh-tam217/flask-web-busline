@@ -28,8 +28,15 @@ def get_tinhthanh_by_name(ten_tinh):
 
 @tinhthanh_bp.route("/tinhthanh", methods=["POST"])
 def create_tinhthanh():
-    data = request.json
-    return jsonify(TinhThanh.create(data["IDTinh"], data["TenTinh"]))
+    try:
+        data = request.get_json()
+        ten_tinh = data["TenTinh"]
+
+        return jsonify(TinhThanh.create(ten_tinh)), 201
+    except KeyError as e:
+        return jsonify({"error": f"Thiếu trường dữ liệu: {str(e)}"}), 400
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 # Cập nhật tỉnh thành
 @tinhthanh_bp.route('/tinhthanh/<string:id_tinh>', methods=['PUT'])

@@ -49,13 +49,13 @@ def get_benxe_by_ten_tinh(ten_tinh):
 def create_benxe():
     try:
         data = request.get_json()
-        id_ben = data["IDBen"]
+        # id_ben = data["IDBen"]
         ten_ben = data["TenBen"]
         dia_chi = data["DiaChi"]
         sdt = data["SDTBen"]
         id_tinh = data["IDTinh"]
 
-        result = BenXe.create(id_ben, ten_ben, dia_chi, sdt, id_tinh)
+        result = BenXe.create(ten_ben, dia_chi, sdt, id_tinh)
 
         if "error" in result:
             return jsonify(result), 400

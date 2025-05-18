@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nhân viên bán vé</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='nvbanve.css') }}">
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+</head>
+<body>
+    
+    <section id="menu">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='imgs/Logo.png') }}" alt="Logo">
+        </div>
+
+        <!-- Sidebar -->
+        <div class="items">
+            <!-- QL bến xe
+            <li><i class='bx bx-map-alt'></i><a href="#benxe">Quản lý bến xe</a></li> -->
+
+            <!-- QL tỉnh thành -->
+            <!-- <li><i class='bx bx-buildings'></i><a href="#tinhthanh">Quản lý tỉnh thành</a></li> -->
+            
+            <!-- QL tuyến xe -->
+            <li><i class='bx bx-map' ></i><a href="#tuyenxe">Tra cứu lịch trình</a></li>
+            
+            <!-- QL chuyến xe -->
+            <li><i class='bx bx-navigation' ></i><a href="#chuyenxe">Tra cứu chuyến xe</a></li>
+            
+            <!-- QL xe -->
+            <!-- <li><i class='bx bx-bus' ></i><a href="#xe">Quản lý xe</a></li> -->
+            
+            <!-- QL nhân viên -->
+            <!-- <li><i class='bx bx-user-check' ></i><a href="#nhanvien">Quản lý nhân viên</a></li> -->
+            
+            <!-- QL khách hàng -->
+            <li><i class='bx bx-user' ></i><a href="#khachhang">Tra cứu khách hàng</a></li>
+            <!-- QL vé xe -->
+            <li><i class='bx bx-user' ></i><a href="#vexe">Tra cứu vé xe</a></li>
+
+            <!-- log out -->
+            <li><i class='bx bx-log-out' ></i><a href="#">Đăng xuất</a></li>
+        </div>
+    </section> 
+
+    <section id="interface">
+        <div class="navigation">
+            <div class="n1">
+                <div class="search">
+                    <i class='bx bx-search' ></i>
+                    <input type="text" placeholder="Tìm kiếm">
+                </div>
+            </div>
+
+            <div class="profile">
+                <i class='bx bx-bell' ></i>
+                <img src="{{ url_for('static', filename='imgs/nvbv.jpg') }}" alt="Avt">
+            </div>
+        </div>
+
+        <!-- QL bến xe -->
+        <div id="benxe" class="page active">
+            <h3 class="i-name">Quản lý bến xe</h3>
+            <div class="ql" style="display: flex; align-items: center;">
+                <button class="btnAdd" onclick="openModal('modalBenXe')">+ Thêm bến xe</button>
+                <!-- Modal thêm bến xe-->
+                <div id="modalBenXe" class="modal-overlay">
+                    <div class="modal-content">
+                        <h2>Thêm bến xe</h2>
+                        <form id="formBenXe">
+                            <select id="tinhThanhSelect" required>
+                                <option value="">Chọn tỉnh/thành phố</option>
+                                <!-- Sẽ được load tự động -->
+                              </select>
+                              
+                            <!-- Input hidden để lưu ID tỉnh tương ứng -->
+                            <input type="hidden" id="idTinhHidden">
+                            <input type="hidden" id="idBen" placeholder="ID Bến" required>
+                            <input type="text" id="tenBen" placeholder="Tên bến xe" required>
+                            <input type="text" id="diaChi" placeholder="Địa chỉ" required>
+                            <input type="text" id="soDienThoai" placeholder="Số điện thoại" required>
+                            <div class="form-buttons">
+                                <button type="submit" class="btn-save">Lưu</button>
+                                <button type="button" class="btn-cancel" onclick="closeModal('modalBenXe')">Hủy</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- Modal Sửa bến xe-->
+                <div id="modalBenXeEdit" class="modal-overlay">
+                    <div class="modal-content">
+                        <h2>Chỉnh sửa bến xe</h2>
+                        <form id="formBenXeEdit">
+                            <input type="hidden" id="idBenEdit"> <!-- Lưu ID Bến, không cho sửa -->
+
+                            <select id="tinhThanhSelectEdit" required>
+                                <option value="">Chọn tỉnh/thành phố</option>
+                            </select>
+
+                            <input type="text" id="tenBenEdit" placeholder="Tên bến xe" required>
+                            <input type="text" id="diaChiEdit" placeholder="Địa chỉ" required>
+                            <input type="text" id="soDienThoaiEdit" placeholder="Số điện thoại" required>
+
+                            <div class="form-buttons">
+                                <button type="submit" class="btn-save">Lưu</button>
+                                <button type="button" class="btn-cancel" onclick="closeModal('modalBenXeEdit')">Hủy</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-4 mt-4 mb-4">
+
+                    <!-- tìm kiếm bến xe theo tên tỉnh -->
+                    <input type="text" id="search-tinh" placeholder="Nhập tên tỉnh" class="search-input">
+                    <button onclick="searchByTenTinh()"class="btn btn-search">Tìm kiếm</button>
+                    <button onclick="loadAllBenXe()"
+                        class="btn btn-reset">Tải lại</button>
+                </div>
+            </div>
+            
+            <div class="board">
+                <table width="100%">
+                    <thead>
+                        <tr>
+                            <td>ID Bến xe</td>
+                            <td>Tên bến xe</td>
+                            <td>Địa chỉ</td>
+                            <td>Số điện thoại</td>
+                        </tr>
+                    </thead>
+                    <tbody id="benxe-table-body">
+                        <!-- Dữ liệu sẽ được thêm vào đây bằng JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- QL tỉnh thành -->
+        <div id="tinhthanh" class="page active">
+            <h3 class="i-name">Quản lý tỉnh thành</h3>
+            <div class="ql" style="display: flex; align-items: center;">
+                <button class="btnAdd" onclick="openModal('modalTinhThanh')">+ Thêm tỉnh thành</button>
+                                <!-- Modal thêm tỉnh thành -->
+                <div id="modalTinhThanh" class="modal-overlay">
+                    <div class="modal-content">
+                        <h2>Thêm tỉnh thành</h2>
+                        <form id="formTinhThanh">
+                            <!-- <input type="hidden" id="idTinh" placeholder="ID tỉnh" required> -->
+                            <input type="text" id="tenTinh" placeholder="Tên tỉnh thành" required>
+                            <div class="form-buttons">
+                                <button type="submit" class="btn-save-tinhthanh">Lưu</button>
+                                <button type="button" class="btn-cancel" onclick="closeModal('modalTinhThanh')">Hủy</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Modal chỉnh sửa tỉnh thành -->
+                <div id="modalTinhThanhEdit" class="modal-overlay">
+                    <div class="modal-content">
+                        <h2>Chỉnh sửa tỉnh thành</h2>
+                        <form id="formTinhThanhEdit">
+                            <!-- Không cho sửa ID -->
+                            <input type="text" id="idTinhEdit" placeholder="ID tỉnh" readonly>
+
+                            <!-- Cho phép sửa tên tỉnh -->
+                            <input type="text" id="tenTinhEdit" placeholder="Tên tỉnh thành" required>
+
+                            <div class="form-buttons">
+                                <button type="submit" class="btn-save-tinhthanh">Lưu</button>
+                                <button type="button" class="btn-cancel" onclick="closeModal('modalTinhThanhEdit')">Hủy</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-4 mt-4 mb-4">
+                    <input type="text" id="search-tinhthanh" placeholder="Nhập tên tỉnh/thành phố" class="search-input">
+                    <button onclick="searchTinhThanh()" class="btn btn-search">Tìm kiếm</button>
+                    <button onclick="loadAllTinhThanh()" class="btn btn-reset">Tải lại</button>
+                </div>
+            </div>
+            
+            <div class="board">
+                <table width="100%">
+                    <thead>
+                        <tr>
+                            <td>ID Tỉnh</td>
+                            <td>Tên tỉnh/thành phố</td>
+                        </tr>
+                    </thead>
+                    <tbody id="tinhthanh-table-body">
+                        <!-- Dữ liệu tỉnh thành sẽ được render bằng JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- QL tuyến xe -->
+        <div id="tuyenxe" class="page active">
+            <h3 class="i-name">Tra cứu lịch trình</h3>
+            <div id="ql" style="display: flex; align-items: center; justify-content: center;">
+           
+                <div class="flex items-center gap-4 mt-4 mb-4 justify-center">
+                    <input type="text" id="search-diemdi" placeholder="Nhập điểm đi" class="search-input">
+                    <input type="text" id="search-diemden" placeholder="Nhập điểm đến" class="search-input">
+                    <button onclick="searchTuyenXe()" class="btn btn-search">Tìm kiếm</button>
+                    <button onclick="loadAllTuyenXe()" class="btn btn-reset">Tải lại</button>
+                </div>
+              
+                <!-- Modal thêm tuyến xe -->
+                <div id="modalTuyenXe" class="modal-overlay">
+                    <div class="modal-content">
+                        <h2>Thêm tuyến xe</h2>
+                        <form id="formTuyenXe">
+
+                            <label for="diemDiSelect">Điểm đi</label>
+                            <select id="diemDiSelect" required>
+                                <option value="">-- Chọn điểm đi --</option>
+                            </select>
+                            <input type="hidden" id="idDiemDi">
+                            <input type="text" id="showIdDiemDi" readonly>
+
+                            <!-- Chọn điểm đến -->
+                            <label for="diemDenSelect">Điểm đến</label>
+                            <select id="diemDenSelect" required>
+                                <option value="">-- Chọn điểm đến --</option>
+                            </select>
+                            <input type="hidden" id="idDiemDen">
+                            <input type="text" id="showIdDiemDen" readonly>
+
+                            <!-- Quãng đường và thời gian -->
+                            <input type="number" id="quangDuong" placeholder="Quãng đường (km)" required>
+                            <input type="number" id="thoiGianDiChuyen" placeholder="Thời gian di chuyển (giờ)" required>
+
+                            <div class="form-buttons">
+                                <button type="submit" class="btn-save-tuyenxe">Lưu</button>
+                                <button type="button" onclick="closeModal('modalTuyenXe')">Hủy</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Form chỉnh sửa tuyến xe -->
+                <div id="edit-form-container" class="modal-overlay">
+                    <div class="modal-content">
+                        <h2>Chỉnh sửa tuyến xe</h3>
+                        <form id="edit-tuyenxe-form">
+                            <input type="hidden" id="edit-id-tuyenxe">
+
+                            <label>Điểm đi:</label>
+                            <input type="text" id="edit-ten-diemdi" required><br>
+
+                            <label>ID Điểm đi:</label>
+                            <input type="text" id="edit-id-diemdi" required><br>
+
+                            <label>Điểm đến:</label>
+                            <input type="text" id="edit-ten-diemden" required><br>
+
+                            <label>ID Điểm đến:</label>
+                            <input type="text" id="edit-id-diemden" required><br>
+
+                            <label>Thời gian di chuyển (giờ):</label>
+                            <input type="number" id="edit-tg-dichuyen" required><br>
+
+                            <label>Quãng đường (km):</label>
+                            <input type="number" id="edit-quangduong" required><br>
+                            <div class="form-buttons">
+                                <button type="submit">Cập nhật</button>
+                                <button type="button" onclick="hideEditForm()">Hủy</button>
+                            </div>
+                            
+                        </form>
+                    </div>
+                    
+                </div>
+
+            </div>
+            
+            
+            
+            <div class="board">
+                <table width="100%">
+                    <thead>
+                        <tr>
+                            <td>ID Tuyến Xe</td>
+                            <td>Điểm Đi</td>
+                            <td>Điểm Đến</td>
+                            <td>Quãng Đường</td>
+                            <td>Thời Gian Di Chuyển</td>
+                        </tr>
+                    </thead>
+                    <tbody id="tuyenxe-table-body"></tbody>
+                </table>
+            </div>
+        </div>
+        
+
+        <!-- Quản lý chuyến xe -->
+        <div id="chuyenxe" class="page active">
+            <h3 class="i-name">Tra cứu chuyến xe</h3>
+            <div id="ql" style="display: flex; align-items: center; justify-content: center;">
+                
+                <div class="flex items-center gap-4 mt-4 mb-4">
+                    <input type="text" id="cx-search-diemdi" placeholder="Nhập điểm đi" class="search-input">
+                    <input type="text" id="cx-search-diemden" placeholder="Nhập điểm đến" class="search-input">
+
+                    <button onclick="searchChuyenXe()" class="btn btn-search">Tìm kiếm</button>
+                    <button onclick="loadAllChuyenXe()" class="btn btn-reset">Tải lại</button>
+                </div>
+            </div>
+            <!-- hiển thị danh sách chuyến xe -->
+            <div class="board">
+                <table width="100%">
+                    <thead>
+                        <tr>
+                            <td>ID Chuyến xe</td>
+                            <td>ID Tài xế</td>
+                            <td>ID Xe</td>
+                            <td>ID Tuyến xe</td>
+                            <td>Bến khởi hành</td>
+                            <td>Bến đến</td>
+                            <td>Thời gian xuất phát</td>
+                            <td>Thời gian dự đến</td>
+                            <td>Giá vé</td>
+                        </tr>
+                    </thead>
+                    <tbody id="chuyenxe-table-body"></tbody>
+                </table>
+            </div>
+
+
+            <!-- form thêm chuyến xe -->
+            <div id="modalChuyenXe" class="modal-overlay">
+                <div class="modal-content">
+                    <h2>Thêm chuyến xe mới</h2>
+                    <form id="formChuyenXe">
+            
+                        <!-- Tài xế -->
+                        <label for="selectTaiXe">Tài xế</label>
+                        <select id="selectTaiXe" required>
+                            <option value="">-- Chọn tài xế --</option>
+                        </select>
+            
+                        <!-- Xe -->
+                        <label for="selectXe">Xe</label>
+                        <select id="selectXe" required>
+                            <option value="">-- Chọn xe --</option>
+                        </select>
+            
+                        <!-- Tuyến xe -->
+                        <label for="selectTuyen">Tuyến xe</label>
+                        <select id="selectTuyen" required>
+                            <option value="">-- Chọn tuyến xe --</option>
+                        </select>
+            
+                        <!-- Bến khởi hành -->
+                        <label for="selectBenKhoiHanh">Bến khởi hành</label>
+                        <select id="selectBenKhoiHanh" required>
+                            <option value="">-- Chọn bến khởi hành --</option>
+                        </select>
+                        <input type="hidden" id="idBenKhoiHanh">
+            
+                        <!-- Bến đến -->
+                        <label for="selectBenDen">Bến đến</label>
+                        <select id="selectBenDen" required>
+                            <option value="">-- Chọn bến đến --</option>
+                        </select>
+                        <input type="hidden" id="idBenDen">
+            
+                        <!-- Thời gian -->
+                        <label>Thời gian xuất phát:</label>
+                        <input type="datetime-local" id="tgXuatPhat" required>
+            
+                        <label>Thời gian dự kiến đến:</label>
+                        <input type="datetime-local" id="tgDuDen" required>
+            
+                        <!-- Giá vé -->
+                        <label>Giá vé (VNĐ):</label>
+                        <input type="number" id="giaVe" required>
+            
+                        <div class="form-buttons">
+                            <button type="submit" class="btn-save-chuyenxe">Lưu</button>
+                            <button type="button" onclick="closeModal('modalChuyenXe')">Hủy</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Modal Edit Chuyến Xe -->
+            <div id="modalEditChuyenXe" class="modal-overlay">
+                <div class="modal-content">
+                    <h3>Chỉnh sửa chuyến xe</h3>
+                    <form id="formEditChuyenXe">
+                        <label>ID Chuyến (không sửa được):</label>
+                        <input type="text" id="editIDChuyen" disabled />
+    
+                        <label>Tài xế:</label>
+                        <select id="editSelectTaiXe"></select>
+    
+                        <label>Xe:</label>
+                        <select id="editSelectXe"></select>
+    
+                        <label>Tuyến xe:</label>
+                        <select id="editSelectTuyen"></select>
+    
+                        <label>Bến khởi hành:</label>
+                        <select id="editSelectBenKhoiHanh"></select>
+                        <input type="hidden" id="editIDBenKhoiHanh" />
+    
+                        <label>Bến đến:</label>
+                        <select id="editSelectBenDen"></select>
+                        <input type="hidden" id="editIDBenDen" />
+    
+                        <label>Thời gian xuất phát:</label>
+                        <input type="time" id="editTGXuatPhat" required />
+    
+                        <label>Thời gian dự kiến đến:</label>
+                        <input type="time" id="editTGDuDen" required />
+    
+                        <label>Giá vé:</label>
+                        <input type="number" id="editGiaVe" required />
+    
+                        <button type="submit">Cập nhật</button>
+                        <button type="button" onclick="closeModal('modalEditChuyenXe')">Hủy</button>
+                    </form>
+                </div>
+                
+            </div>
+
+
+            
+        </div>
+
+        <!-- Quản lý khách hàng -->
+        <div id="khachhang" class="page active">
+            <h3 class="i-name">Tra cứu khách hàng</h3>
+            <div id="ql" style="display: flex; align-items: center; justify-content: center;">
+                <div class="flex items-center gap-4 mt-4 mb-4">
+                    <input type="text" id="search-khachhang" placeholder="Nhập tên khách hàng" class="search-input">
+                    <button onclick="searchKhachHang()" class="btn btn-search">Tìm kiếm</button>
+                    <button onclick="loadAllKhachHang()" class="btn btn-reset">Tải lại</button>
+                </div>
+                <!-- Lọc theo giới tính -->
+                <div class="filter-container">
+                    <label for="filterGioiTinhKH">Giới tính:</label>
+                    <select id="filterGioiTinhKH" onchange="filterKhachHang()">
+                        <option value="">Tất cả</option>
+                        <option value="Nam">Nam</option>
+                        <option value="Nữ">Nữ</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Hiển thị danh sách khách hàng -->
+            <div class="board">
+                <table width="100%">
+                    <thead>
+                        <tr>
+                            <td>ID Khách hàng</td>
+                            <td>Họ và tên</td>
+                            <td>Giới tính</td>
+                            <td>CCCD</td>
+                            <td>Số điện thoại</td>
+                        </tr>
+                    </thead>
+                    <tbody id="khachhang-table-body"></tbody>
+                </table>
+            </div>
+        </div>
+
+
+        <!-- Quản lý vé xe -->
+        <div id="vexe" class="page active">
+            <h3 class="i-name">Quản lý vé xe</h3>
+            <div id="ql" style="display: flex; align-items: center; justify-content: center;">
+                <div class="flex items-center gap-4 mt-4 mb-4">
+                    <input type="text" id="search-ve" placeholder="Nhập ID vé" class="search-input">
+                    <button onclick="searchVe()" class="btn btn-search">Tìm kiếm</button>
+                    <button onclick="loadAllVe()" class="btn btn-reset">Tải lại</button>
+                </div>
+            </div>
+
+            <!-- Hiển thị danh sách vé xe -->
+            <div class="board">
+                <table width="100%">
+                    <thead>
+                        <tr>
+                            <td>ID Vé</td>
+                            <td>ID Chuyến xe</td>
+                            <td>ID Khách hàng</td>
+                            <td>ID xe</td>
+                            <td>Ngày đặt</td>
+                            <td>Giá vé</td>
+                        </tr>
+                    </thead>
+                    <tbody id="ve-table-body"></tbody>
+                </table>
+            </div>
+        </div>
+
+    </section>
+
+    <script src="{{ url_for('static', filename='js/nvbanve.js') }}"></script>
+    
+</body>
+</html>

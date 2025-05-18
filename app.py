@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, url_for
+from flask import Flask, jsonify, redirect, request, session, url_for
 from flask import Flask, render_template
 
 from config import get_db_connection
@@ -42,6 +42,10 @@ def login():
 @app.route('/admin.html')
 def admin():
     return render_template('admin.html')
+
+@app.route('/nvbanve.html')
+def nvbanve():
+    return render_template('nvbanve.html')
 
 @app.route('/api/tentinhthanh', methods=['GET'])
 def get_tinhthanh():
@@ -90,6 +94,58 @@ def timkiem_chuyenxe():
     return render_template("ketqua.html", chuyen_xe_list=chuyen_xe_list)
 
 
+
+@app.route('/api/chuyenxe/search')
+def api_search_chuyenxe_json():
+    diem_di = request.args.get('diem_di', "").strip()
+    diem_den = request.args.get('diem_den', "").strip()
+
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    cursor.execute("""
+        SELECT IDTuyenXe FROM TUYENXE
+        WHERE TenDiemDi = %s AND TenDiemDen = %s
+    """, (diem_di, diem_den))
+    tuyen = cursor.fetchone()
+    # cursor.fetchall()
+
+    if not tuyen:
+        conn.close()
+        return jsonify([])
+
+    id_tuyen = tuyen["IDTuyenXe"]
+
+    cursor.close()
+    cursor = conn.cursor(dictionary=True)
+
+
+    cursor.execute("""
+        SELECT cx.IDChuyen, cx.IDTaiXe, cx.IDXe, cx.IDTuyenXe,
+               bx1.TenBen AS BenKhoiHanh, bx2.TenBen AS BenDen,
+               cx.TG_XuatPhat, cx.TG_DuDen, cx.GiaVe
+        FROM CHUYENXE cx
+        JOIN BENXE bx1 ON cx.IDBenKhoiHanh = bx1.IDBen
+        JOIN BENXE bx2 ON cx.IDBenDen = bx2.IDBen
+        WHERE cx.IDTuyenXe = %s
+    """, (str(id_tuyen),))
+    
+    chuyen_xe_list = cursor.fetchall()
+    conn.close()
+    from datetime import timedelta
+
+    for chuyen in chuyen_xe_list:
+        if isinstance(chuyen["TG_XuatPhat"], timedelta):
+            chuyen["TG_XuatPhat"] = str(chuyen["TG_XuatPhat"])
+        if isinstance(chuyen["TG_DuDen"], timedelta):
+            chuyen["TG_DuDen"] = str(chuyen["TG_DuDen"])
+
+    return jsonify(chuyen_xe_list)
+
+
+@app.route("/logout")
+def logout():
+    return redirect(url_for("homePage"))
 
 if __name__ == "__main__":
     app.run(debug=True)

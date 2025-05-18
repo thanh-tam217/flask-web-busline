@@ -10,15 +10,7 @@ class TuyenXe:
         result = cursor.fetchall()
         conn.close()
         return result
-# class TinhThanh:
-#     @staticmethod
-#     def get_all():
-#         conn = get_db_connection()
-#         cursor = conn.cursor(dictionary=True)
-#         cursor.execute("SELECT * FROM TINHTHANH")
-#         result = cursor.fetchall()
-#         conn.close()
-#         return result
+
     @staticmethod
     def get_by_id(id_tuyenxe):
         conn = get_db_connection()
@@ -28,17 +20,42 @@ class TuyenXe:
         conn.close()
         return result
         
+    @staticmethod
+    def generate_new_id():
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("SELECT IDTuyenXe FROM TUYENXE WHERE IDTuyenXe LIKE 'TX____' ORDER BY IDTuyenXe DESC LIMIT 1")
+        result = cursor.fetchone()
+        conn.close()
+
+        if result:
+            last_id = result[0]
+            number = int(last_id[2:]) + 1
+            new_id = f"TX{str(number).zfill(4)}"
+        else:
+            new_id = "TX0001"
+        return new_id
+
 
     @staticmethod
     def create(data):
         conn = get_db_connection()
         cursor = conn.cursor()
-        sql = """INSERT INTO TUYENXE (IDTuyenXe, IDDiemDi, TenDiemDi, IDDiemDen, TenDiemDen, TG_DiChuyen, QuangDuong) 
-                 VALUES (%s, %s, %s, %s, %s, %s, %s)"""
-        values = (data ['IDTuyenXe'], data['IDDiemDi'], data['TenDiemDi'], data['IDDiemDen'], data['TenDiemDen'], data['TG_DiChuyen'], data['QuangDuong'])
-        cursor.execute(sql, values)
-        conn.commit()
-        conn.close()
+        try:
+            id_tuyenxe = TuyenXe.generate_new_id()
+
+            cursor.execute(
+                "INSERT INTO TUYENXE (IDTuyenXe, IDDiemDi, TenDiemDi, IDDiemDen, TenDiemDen, TG_DiChuyen, QuangDuong) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+                (id_tuyenxe, data['IDDiemDi'], data['TenDiemDi'], data['IDDiemDen'], data['TenDiemDen'], data['TG_DiChuyen'], data['QuangDuong'])
+            )
+            conn.commit()
+            return {"message": "Thêm thành công", "IDTuyenXe": id_tuyenxe}
+        except Exception as e:
+            conn.rollback()
+            return {"error": str(e)}
+        finally:
+            conn.close()
+        
 
     @staticmethod
     def update(id_tuyenxe, data):

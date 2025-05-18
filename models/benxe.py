@@ -46,23 +46,60 @@ class BenXe:
         conn.close()
         return result
 
-    # 
+
     @staticmethod
-    def create(id_ben, ten_ben, dia_chi, sdt, id_tinh):
+    def generate_new_id():
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("SELECT IDBen FROM BENXE WHERE IDBen LIKE 'BX____' ORDER BY IDBen DESC LIMIT 1")
+        result = cursor.fetchone()
+        conn.close()
+
+        if result:
+            last_id = result[0]  # Ví dụ: 'BX0042'
+            number = int(last_id[2:]) + 1  # Lấy số và +1
+            new_id = f"BX{str(number).zfill(4)}"  # Thành BX0043
+        else:
+            new_id = "BX0001"  # Nếu chưa có bản ghi nào
+        return new_id
+
+    
+    @staticmethod
+    def create(ten_ben, dia_chi, sdt, id_tinh):
         conn = get_db_connection()
         cursor = conn.cursor()
         try:
+            id_ben = BenXe.generate_new_id()
+
             cursor.execute(
                 "INSERT INTO BENXE (IDBen, TenBen, DiaChi, SDTBen, IDTinh) VALUES (%s, %s, %s, %s, %s)",
                 (id_ben, ten_ben, dia_chi, sdt, id_tinh),
             )
             conn.commit()
-            return {"message": "Thêm thành công"}
+            return {"message": "Thêm thành công", "IDBen": id_ben}
         except Exception as e:
             conn.rollback()
             return {"error": str(e)}
         finally:
             conn.close()
+
+
+    # @staticmethod
+    # def create(id_ben, ten_ben, dia_chi, sdt, id_tinh):
+    #     conn = get_db_connection()
+    #     cursor = conn.cursor()
+    #     try:
+    #         cursor.execute(
+    #             "INSERT INTO BENXE (IDBen, TenBen, DiaChi, SDTBen, IDTinh) VALUES (%s, %s, %s, %s, %s)",
+    #             (id_ben, ten_ben, dia_chi, sdt, id_tinh),
+    #         )
+    #         conn.commit()
+    #         return {"message": "Thêm thành công"}
+    #     except Exception as e:
+    #         conn.rollback()
+    #         return {"error": str(e)}
+    #     finally:
+    #         conn.close()
 
 
     # @staticmethod

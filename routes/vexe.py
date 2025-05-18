@@ -10,3 +10,8 @@ def get_all_vexe():
 @vexe_bp.route("/vexe/<string:id_vexe>", methods=["GET"])
 def get_vexe_by_id(id_vexe):
     return jsonify(VeXe.get_by_id(id_vexe))
+
+@vexe_bp.route("/vexe/<string:id_vexe>", methods=["DELETE"])
+def delete_vexe(id_vexe):
+    return jsonify(VeXe.delete(id_vexe))
+

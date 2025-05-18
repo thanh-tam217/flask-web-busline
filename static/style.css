@@ -111,7 +111,7 @@ section {
     position: relative;
     width: 100%;
     height: 100vh;
-    background-image: linear-gradient(rgba(3, 82, 0, 0.6), rgba(6, 184, 0, 0.6)), url("{{ url_for('static', filename='imgs/backround.jpg')}}");
+    background-image: linear-gradient(rgba(3, 82, 0, 0.6), rgba(6, 184, 0, 0.6)), url("/static/imgs/backround.jpg");
     background-size: cover;
     
     display: grid;
